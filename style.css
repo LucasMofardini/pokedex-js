@@ -131,6 +131,9 @@ h1::before{
     opacity: 1;
     visibility: visible;
 
+    box-shadow: 0px 0px 15px rgb(0 0 0 / 10%);
+
+
 }
 .box-modal > div{
     margin: 10px 0
@@ -151,6 +154,8 @@ h1::before{
 .modal .infos .box-image img{
     margin-left: 20px;
     width: 150px;
+    filter: drop-shadow(5px 5px 5px #222);
+
 }
 .modal .infos ul{
     background-color: gold;
