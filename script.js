@@ -6,14 +6,14 @@ const inicializaPokemons = () => {
     .then((data) => {
         const { results } = data;
         results.forEach((item) => {
-            fetch(item.url).then((requestPokemon) => requestPokemon.json())
+            fetch(item.url).then((requestPokemon) => requestPokemon.json() )
             .then((dataPokemon) => {
                 const nomePokemon = dataPokemon.name;
                 const urlFotoPokemon = dataPokemon.sprites.front_default;
                 const tipoPokemon = dataPokemon.types;
-                
+
                 const pokemon = `
-                <div class="pokemon">
+                <div class="pokemon" onClick="abrePokemon(${dataPokemon.id})">
                     <div class="box-nome-tipo"> 
                         <h2 class="nome">${nomePokemon}</h2>
                         <ul class="tipo">
@@ -34,4 +34,15 @@ const inicializaPokemons = () => {
  
 }
 
-inicializaPokemons()
+const abrePokemon = (id) => {
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
+
+    fetch(url).then((res) => res.json())
+    .then((data) => {
+        console.log(data)
+        
+    })
+}
+
+inicializaPokemons();
+
