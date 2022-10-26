@@ -1,7 +1,7 @@
 const containerPokemon = document.querySelector('.pokemons');
 const modalPokemon = document.querySelector('.bg-modal');
 const root = document.querySelector('.root-modal');
-let previus = document.querySelector('#previus');
+let previous = document.querySelector('#previous');
 let next = document.querySelector('#next');
 
 let urlNext;
@@ -14,6 +14,13 @@ const inicializaPokemons = (url, clicouParaPassar) => {
         const { results } = data;
         urlNext = data.next;
         urlPrevious = data.previous;
+        
+        // Muda as cores dos botões caso não tenha PreviousPage ou NextPage
+        previous.style.color = '#3c3c3c';
+        if(!urlPrevious) previous.style.color = 'rgba(0,0,0,.5)';
+
+        next.style.color = '#3c3c3c';
+        if(!urlNext) next.style.color = 'rgba(0,0,0,.5)';
 
         if(clicouParaPassar) containerPokemon.innerHTML = '';
 
@@ -27,7 +34,7 @@ const inicializaPokemons = (url, clicouParaPassar) => {
                 let pokemon = `
                 <div class="pokemon" onClick="abrePokemon(${dataPokemon.id})">
                     <div class="box-nome-tipo"> 
-                        <h2 class="nome">${nomePokemon}</h2>
+                        <h2 class="nome"><span class="subtitle-pokemon">#${dataPokemon?.order}</span> ${nomePokemon}</h2>
                         <ul class="tipo">
                             <li>
                                 ${tipoPokemon.map((tipo) => {
@@ -93,10 +100,8 @@ const fecharModal = () => {
 next.addEventListener('click', () => {
     inicializaPokemons(urlNext, true);
 })
-previus.addEventListener('click', () => {
-    
+previous.addEventListener('click', () => {
     if(urlPrevious)    return inicializaPokemons(urlPrevious, true);
-
 })
 
 inicializaPokemons('https://pokeapi.co/api/v2/pokemon/', false);

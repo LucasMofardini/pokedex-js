@@ -32,6 +32,7 @@ h1::before{
 
     padding: 15px 20px;
     box-shadow: 0px 0px 15px rgb(0 0 0 / 10%);
+    position: relative;
 
 }
 .pokemons h2{
@@ -58,6 +59,14 @@ h1::before{
 }
 .pokemons > div img{
     width: 140px;
+}
+.subtitle-pokemon{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    transform: rotate(25deg);
+    color: rgba(0,0,0,.2);
+    user-select: none;
 }
 .pokemon .box-nome-tipo{
     display: flex;
@@ -189,7 +198,7 @@ h1::before{
     font-family: 'IBM Plex Mono';
     display: flex;
     justify-content: flex-end;
-
+    color: #3c3c3c;
     margin: 20px 0 10px 0;
 }
 .container-setas > div {
