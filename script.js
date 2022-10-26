@@ -1,9 +1,11 @@
 const containerPokemon = document.querySelector('.pokemons');
 const modalPokemon = document.querySelector('.bg-modal');
-const previus = document.querySelector('#previus');
-const next = document.querySelector('#next');
+const root = document.querySelector('.root-modal');
+let previus = document.querySelector('#previus');
+let next = document.querySelector('#next');
 
 let urlNext;
+let urlPrevious;
 
 const inicializaPokemons = (url, clicouParaPassar) => {
     fetch(url)
@@ -11,7 +13,8 @@ const inicializaPokemons = (url, clicouParaPassar) => {
     .then((data) => {
         const { results } = data;
         urlNext = data.next;
-    
+        urlPrevious = data.previous;
+
         if(clicouParaPassar) containerPokemon.innerHTML = '';
 
         results.forEach((item) => {
@@ -79,7 +82,7 @@ const abrePokemon = (id) => {
           </div>
         `;
 
-        document.body.innerHTML += div;   
+        root.innerHTML += div;
     })
 }
 
@@ -88,8 +91,12 @@ const fecharModal = () => {
 }
 
 next.addEventListener('click', () => {
-    console.log('clicou')
     inicializaPokemons(urlNext, true);
+})
+previus.addEventListener('click', () => {
+    
+    if(urlPrevious)    return inicializaPokemons(urlPrevious, true);
+
 })
 
 inicializaPokemons('https://pokeapi.co/api/v2/pokemon/', false);
