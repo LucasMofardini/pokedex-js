@@ -4,6 +4,10 @@ body{
     width: 100%;
     background-color: azure;
 }
+a{
+    text-decoration: none;
+    color: #3c3c3c;
+}
 h1{
     font-size: 3rem;
     font-family: 'IBM Plex Mono';
@@ -17,6 +21,7 @@ h1::before{
     content: '|';
     color: rgba(0,0,0,0.2);
 }
+
 .pokemons{
     display: grid;
     gap: 10px 15px;
