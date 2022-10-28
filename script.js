@@ -1,15 +1,20 @@
 const containerPokemon = document.querySelector(".pokemons");
 const modalPokemon = document.querySelector(".bg-modal");
 const root = document.querySelector(".root-modal");
+const titlePage = document.querySelector('#title-page');
 let previous = document.querySelector("#previous");
 let next = document.querySelector("#next");
 
+let urlNow;
 let urlNext;
 let urlPrevious;
 
-const inicializaPokemons = (url, clicouParaPassar) => {
+const inicializaPokemons = (url, limparContainer) => {
   fetch(url)
-    .then((req) => req.json())
+    .then((req) => {
+      gravaNoStorage(req.url);
+      return req.json();
+    })
     .then((data) => {
       const { results } = data;
       urlNext = data.next;
@@ -22,7 +27,7 @@ const inicializaPokemons = (url, clicouParaPassar) => {
       next.style.color = "#3c3c3c";
       if (!urlNext) next.style.color = "rgba(0,0,0,.5)";
 
-      if (clicouParaPassar) containerPokemon.innerHTML = "";
+      if (limparContainer) containerPokemon.innerHTML = "";
 
       const urls = results.map(({ url }) => fetch(url));
 
@@ -113,11 +118,33 @@ const fecharModal = () => {
   document.querySelector(".bg-modal").remove();
 };
 
+const gravaNoStorage = (url) => {
+  localStorage.url = url;
+};
+
+const recuperaNoStorage = () => {
+  const url = localStorage.url;
+
+  if (url)  return inicializaPokemons(url, true);
+  inicializaPokemons("https://pokeapi.co/api/v2/pokemon/", true);
+};
+
 next.addEventListener("click", () => {
   inicializaPokemons(urlNext, true);
-});
-previous.addEventListener("click", () => {
-  if (urlPrevious) return inicializaPokemons(urlPrevious, true);
+  gravaNoStorage(urlNext);
 });
 
-inicializaPokemons("https://pokeapi.co/api/v2/pokemon/", false);
+previous.addEventListener("click", () => {
+  if (urlPrevious) {
+    gravaNoStorage(urlPrevious);
+    return inicializaPokemons(urlPrevious, true);
+  }
+});
+
+titlePage.addEventListener('click', (e) => {
+    e.preventDefault();
+    gravaNoStorage("https://pokeapi.co/api/v2/pokemon/");
+    recuperaNoStorage()
+})
+
+recuperaNoStorage();
