@@ -22,6 +22,7 @@ header{
 }
 .container-body{
     min-width: 800px;
+    margin-bottom: 100px;
 }
 h1::before{
     content: '|';
@@ -34,7 +35,7 @@ h1::before{
     display: grid;
     gap: 10px 15px;
     grid-template-columns: repeat(2,1fr);
-    margin: 0px 0 40px 0;
+    margin: 0px 0 20px 0;
 }
 .pokemon{
     min-width: 350px;
@@ -220,4 +221,15 @@ h1::before{
 }
 .container-setas > div:nth-child(1) {
     margin-right: 40px;
+}
+.container-verMais{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    margin: 40px 0 20px 0;
+
+    font-family: 'IBM Plex Mono';
+    cursor: pointer;
+    user-select: none;
 }

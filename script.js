@@ -2,6 +2,8 @@ const containerPokemon = document.querySelector(".pokemons");
 const modalPokemon = document.querySelector(".bg-modal");
 const root = document.querySelector(".root-modal");
 const titlePage = document.querySelector('#title-page');
+const verMais = document.querySelector('.container-verMais span');
+
 let previous = document.querySelector("#previous");
 let next = document.querySelector("#next");
 
@@ -145,6 +147,10 @@ titlePage.addEventListener('click', (e) => {
     e.preventDefault();
     gravaNoStorage("https://pokeapi.co/api/v2/pokemon/");
     recuperaNoStorage()
+})
+
+verMais.addEventListener('click', () => {
+  inicializaPokemons(urlNext, false);
 })
 
 recuperaNoStorage();
