@@ -1,66 +1,74 @@
-const containerPokemon = document.querySelector('.pokemons');
-const modalPokemon = document.querySelector('.bg-modal');
-const root = document.querySelector('.root-modal');
-let previous = document.querySelector('#previous');
-let next = document.querySelector('#next');
+const containerPokemon = document.querySelector(".pokemons");
+const modalPokemon = document.querySelector(".bg-modal");
+const root = document.querySelector(".root-modal");
+let previous = document.querySelector("#previous");
+let next = document.querySelector("#next");
 
 let urlNext;
 let urlPrevious;
 
 const inicializaPokemons = (url, clicouParaPassar) => {
-    fetch(url)
+  fetch(url)
     .then((req) => req.json())
     .then((data) => {
-        const { results } = data;
-        urlNext = data.next;
-        urlPrevious = data.previous;
-        
-        // Muda as cores dos botões caso não tenha PreviousPage ou NextPage
-        previous.style.color = '#3c3c3c';
-        if(!urlPrevious) previous.style.color = 'rgba(0,0,0,.5)';
+      const { results } = data;
+      urlNext = data.next;
+      urlPrevious = data.previous;
 
-        next.style.color = '#3c3c3c';
-        if(!urlNext) next.style.color = 'rgba(0,0,0,.5)';
+      // Muda as cores dos botões caso não tenha PreviousPage ou NextPage
+      previous.style.color = "#3c3c3c";
+      if (!urlPrevious) previous.style.color = "rgba(0,0,0,.5)";
 
-        if(clicouParaPassar) containerPokemon.innerHTML = '';
+      next.style.color = "#3c3c3c";
+      if (!urlNext) next.style.color = "rgba(0,0,0,.5)";
 
-        results.forEach((item) => {
-            fetch(item.url).then((requestPokemon) => requestPokemon.json() )
-            .then((dataPokemon) => {
-                const nomePokemon = dataPokemon.name;
-                const urlFotoPokemon = dataPokemon.sprites.front_default;
-                const tipoPokemon = dataPokemon.types;
+      if (clicouParaPassar) containerPokemon.innerHTML = "";
 
-                let pokemon = `
-                <div class="pokemon" onClick="abrePokemon(${dataPokemon.id})">
-                    <div class="box-nome-tipo"> 
-                        <h2 class="nome"><span class="subtitle-pokemon">#${dataPokemon?.order}</span> ${nomePokemon}</h2>
-                        <ul class="tipo">
-                            <li>
-                                ${tipoPokemon.map((tipo) => {
-                                        return tipo.type.name
-                                }).join('</li><li>')}
-                            </li>
-                        </ul>
-                    </div>
-                    <img src="${urlFotoPokemon}">
-                </div>`;
+      const urls = results.map(({ url }) => fetch(url));
+
+      Promise.all(urls).then((response) => {
+        response.forEach((res) => {
+          res.json().then((dataPokemon) => {
+            const nomePokemon = dataPokemon?.name;
+            const urlFotoPokemon = dataPokemon?.sprites.front_default;
+            const tipoPokemon = dataPokemon?.types;
+            let pokemon = `
+                                <div class="pokemon" onClick="abrePokemon(${
+                                  dataPokemon?.id
+                                })">
+                                    <div class="box-nome-tipo"> 
+                                        <h2 class="nome"><span class="subtitle-pokemon">#${
+                                          dataPokemon?.order
+                                        }</span> ${nomePokemon}</h2>
+                                        <ul class="tipo">
+                                            <li>
+                                                ${tipoPokemon
+                                                  .map((tipo) => {
+                                                    return tipo.type.name;
+                                                  })
+                                                  .join("</li><li>")}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <img src="${urlFotoPokemon}">
+                                </div>`;
 
             containerPokemon.innerHTML += pokemon;
-            });
-        })
-    })
- 
-}
+          });
+        });
+      });
+    });
+};
 
 const abrePokemon = (id) => {
-    const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
+  const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
 
-    fetch(url).then((res) => res.json())
+  fetch(url)
+    .then((res) => res.json())
     .then((data) => {
-        console.log(data)
-       
-        const div = `
+      console.log(data);
+
+      const div = `
         <div class="bg-modal active">
         <div class="modal active">
             <div class="box-modal active">  
@@ -69,13 +77,21 @@ const abrePokemon = (id) => {
                 </div>
                 <div class="infos">
                     <div>
-                        <p><b>Altura : </b> <span class="show">${data.height}</span></p>
-                        <p><b>Peso : </b> <span class="show">${data.weight}</span> </p>
-                        <p><b>Experiencia Base :</b> <span class="show">${data.base_experience}</span></p>
+                        <p><b>Altura : </b> <span class="show">${
+                          data.height
+                        }</span></p>
+                        <p><b>Peso : </b> <span class="show">${
+                          data.weight
+                        }</span> </p>
+                        <p><b>Experiencia Base :</b> <span class="show">${
+                          data.base_experience
+                        }</span></p>
                         <p><b>Status: </b></p>
-                        <ul> ${data.stats.map((item)=>{
+                        <ul> ${data.stats
+                          .map((item) => {
                             return `<li>${item.stat.name} = ${item.base_stat}</li>`;
-                        }).join('</li><li>')} </ul>
+                          })
+                          .join("</li><li>")} </ul>
                     </div>
                     <div class="box-image">
                         <img src="${data.sprites.front_default}">
@@ -89,20 +105,19 @@ const abrePokemon = (id) => {
           </div>
         `;
 
-        root.innerHTML += div;
-    })
-}
+      root.innerHTML += div;
+    });
+};
 
 const fecharModal = () => {
-    document.querySelector('.bg-modal').remove();
-}
+  document.querySelector(".bg-modal").remove();
+};
 
-next.addEventListener('click', () => {
-    inicializaPokemons(urlNext, true);
-})
-previous.addEventListener('click', () => {
-    if(urlPrevious)    return inicializaPokemons(urlPrevious, true);
-})
+next.addEventListener("click", () => {
+  inicializaPokemons(urlNext, true);
+});
+previous.addEventListener("click", () => {
+  if (urlPrevious) return inicializaPokemons(urlPrevious, true);
+});
 
-inicializaPokemons('https://pokeapi.co/api/v2/pokemon/', false);
-
+inicializaPokemons("https://pokeapi.co/api/v2/pokemon/", false);
