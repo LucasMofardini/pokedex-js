@@ -103,7 +103,6 @@ h1::before{
     }
     100%{
         transform: rotateX(0,0);
-
     }
 }
 
@@ -230,6 +229,7 @@ h1::before{
     margin: 40px 0 20px 0;
 
     font-family: 'IBM Plex Mono';
+    font-weight: 300;
     cursor: pointer;
     user-select: none;
 }
@@ -254,7 +254,7 @@ h1::before{
     background: transparent;
 
     border-bottom: 1px solid rgba(0,0,0,.1);
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: #3c3c3c;
     font-family: 'IBM Plex Mono';
 
@@ -289,11 +289,11 @@ footer{
 }
 footer a{
     position: absolute;
-    animation: balanco-infinito-lado infinite 5s;
+    animation: move-left-to-right infinite 5s;
 }
 
 
-@keyframes balanco-infinito-lado {
+@keyframes move-left-to-right {
     0%{
         transform: translatex(0);
         
