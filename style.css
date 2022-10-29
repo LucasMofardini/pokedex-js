@@ -281,3 +281,28 @@ h1::before{
 .container-pesquisa #form-input button:hover{
     background-color: rgba(0,0,0,.1);
 }
+footer{
+    font-family: 'IBM Plex Mono';
+    font-weight: 200;
+    user-select: none;
+    position: relative;
+}
+footer a{
+    position: absolute;
+    animation: balanco-infinito-lado infinite 5s;
+}
+
+
+@keyframes balanco-infinito-lado {
+    0%{
+        transform: translatex(0);
+        
+    }
+    50%{
+        transform: translatex(10px);
+
+    }
+    100%{
+        transform: translatex(0);
+    }
+}

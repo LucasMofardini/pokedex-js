@@ -19,20 +19,16 @@ window.fechaPokemon = fechaPokemon;
 
 next.addEventListener("click", () => {
   inicializaPokemons(window.urlNext, true);
-  gravaNoStorage(window.urlNext);
 });
 
 previous.addEventListener("click", () => {
-  if (window.urlPrevious) {
-    gravaNoStorage(window.urlPrevious);
-    return inicializaPokemons(window.urlPrevious, true);
-  }
+  if (window.urlPrevious) inicializaPokemons(window.urlPrevious, true);
 });
 
 titlePage.addEventListener('click', (e) => {
     e.preventDefault();
     gravaNoStorage("https://pokeapi.co/api/v2/pokemon/");
-    recuperaNoStorage()
+    recuperaNoStorage();
 })
 
 verMais.addEventListener('click', () => {
