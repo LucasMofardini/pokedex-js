@@ -233,3 +233,51 @@ h1::before{
     cursor: pointer;
     user-select: none;
 }
+.container-pesquisa{
+    display: flex;
+    justify-content: center;
+
+    margin: 40px 0;
+}
+.container-pesquisa #form-input{
+    height: 40px;
+    width: 100%;
+    /* background: aqua; */
+    display: flex;
+    justify-content: center;
+}
+.container-pesquisa #form-input input{
+    width: 70%;
+    height: calc(100% - 1px); /* Tirar a altura da borda */
+    padding: 0 10px;
+    border: none;
+    background: transparent;
+
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    font-size: 1.5rem;
+    color: #3c3c3c;
+    font-family: 'IBM Plex Mono';
+
+    user-select: none;
+    outline: none;
+
+    transition: 0.2s ease-in;
+}
+.container-pesquisa #form-input input:focus{
+   background-color: rgba(0,0,0,0.1);
+   border-color: rgba(0,0,0,0.1);
+}
+.container-pesquisa #form-input button{
+    height: 100%;
+    width: 50px;
+    background: transparent;
+    border: 1px solid rgba(0,0,0,.1);
+    color: rgba(0,0,0,.5);
+    cursor: pointer;
+    user-select: none;
+
+    transition: 0.2s ease-in;
+}
+.container-pesquisa #form-input button:hover{
+    background-color: rgba(0,0,0,.1);
+}

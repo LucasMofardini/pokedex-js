@@ -3,6 +3,7 @@ const modalPokemon = document.querySelector(".bg-modal");
 const root = document.querySelector(".root-modal");
 const titlePage = document.querySelector('#title-page');
 const verMais = document.querySelector('.container-verMais span');
+const formInput = document.querySelector('#form-input');
 
 let previous = document.querySelector("#previous");
 let next = document.querySelector("#next");
@@ -36,36 +37,74 @@ const inicializaPokemons = (url, limparContainer) => {
       Promise.all(urls).then((response) => {
         response.forEach((res) => {
           res.json().then((dataPokemon) => {
-            const nomePokemon = dataPokemon?.name;
-            const urlFotoPokemon = dataPokemon?.sprites.front_default;
-            const tipoPokemon = dataPokemon?.types;
-            let pokemon = `
-                                <div class="pokemon" onClick="abrePokemon(${
-                                  dataPokemon?.id
-                                })">
-                                    <div class="box-nome-tipo"> 
-                                        <h2 class="nome"><span class="subtitle-pokemon">#${
-                                          dataPokemon?.order
-                                        }</span> ${nomePokemon}</h2>
-                                        <ul class="tipo">
-                                            <li>
-                                                ${tipoPokemon
-                                                  .map((tipo) => {
-                                                    return tipo.type.name;
-                                                  })
-                                                  .join("</li><li>")}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <img src="${urlFotoPokemon}">
-                                </div>`;
-
-            containerPokemon.innerHTML += pokemon;
+            // const nomePokemon = dataPokemon?.name;
+            // const urlFotoPokemon = dataPokemon?.sprites.front_default;
+            // const tipoPokemon = dataPokemon?.types;
+            // let pokemon = `
+            //                     <div class="pokemon" onClick="abrePokemon(${
+            //                       dataPokemon?.id
+            //                     })">
+            //                         <div class="box-nome-tipo"> 
+            //                             <h2 class="nome"><span class="subtitle-pokemon">#${
+            //                               dataPokemon?.order
+            //                             }</span> ${nomePokemon}</h2>
+            //                             <ul class="tipo">
+            //                                 <li>
+            //                                     ${tipoPokemon
+            //                                       .map((tipo) => {
+            //                                         return tipo.type.name;
+            //                                       })
+            //                                       .join("</li><li>")}
+            //                                 </li>
+            //                             </ul>
+            //                         </div>
+            //                         <img src="${urlFotoPokemon}">
+            //                     </div>`;
+            
+            containerPokemon.innerHTML += renderizaPokemon(dataPokemon);
           });
         });
       });
     });
 };
+
+const pesquisaPorPokemon = async (value) => {
+  const req = await fetch(`https://pokeapi.co/api/v2/pokemon/${value}`);
+
+  if(req.status === 404) return mensagemPesquisa('Não foi encontrado...')
+  if(req.status !== 200) return mensagemPesquisa('Erro na pesquisa');
+    
+  const data = await req.json();
+  
+  containerPokemon.innerHTML = renderizaPokemon(data);
+  console.log(data);
+}
+
+const renderizaPokemon = (dataPokemon) => {
+  const nomePokemon = dataPokemon?.name;
+  const urlFotoPokemon = dataPokemon?.sprites.front_default;
+  const tipoPokemon = dataPokemon?.types;
+  return  `
+                      <div class="pokemon" onClick="abrePokemon(${
+                        dataPokemon?.id
+                      })">
+                          <div class="box-nome-tipo"> 
+                              <h2 class="nome"><span class="subtitle-pokemon">#${
+                                dataPokemon?.id
+                              }</span> ${nomePokemon}</h2>
+                              <ul class="tipo">
+                                  <li>
+                                      ${tipoPokemon
+                                        .map((tipo) => {
+                                          return tipo.type.name;
+                                        })
+                                        .join("</li><li>")}
+                                  </li>
+                              </ul>
+                          </div>
+                          <img src="${urlFotoPokemon}">
+                      </div>`;
+}
 
 const abrePokemon = (id) => {
   const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
@@ -73,7 +112,6 @@ const abrePokemon = (id) => {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
 
       const div = `
         <div class="bg-modal active">
@@ -131,6 +169,11 @@ const recuperaNoStorage = () => {
   inicializaPokemons("https://pokeapi.co/api/v2/pokemon/", true);
 };
 
+
+
+const mensagemPesquisa = (mensagem) => {
+    alert(mensagem);
+}
 next.addEventListener("click", () => {
   inicializaPokemons(urlNext, true);
   gravaNoStorage(urlNext);
@@ -152,5 +195,13 @@ titlePage.addEventListener('click', (e) => {
 verMais.addEventListener('click', () => {
   inicializaPokemons(urlNext, false);
 })
+
+formInput.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = formInput.texto.value;
+  
+  if(input) pesquisaPorPokemon(input.toLowerCase());
+})
+
 
 recuperaNoStorage();
