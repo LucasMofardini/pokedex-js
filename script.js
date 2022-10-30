@@ -27,6 +27,9 @@ previous.addEventListener("click", () => {
 
 titlePage.addEventListener('click', (e) => {
     e.preventDefault();
+    if(localStorage.url == 'https://pokeapi.co/api/v2/pokemon/') return;
+    
+    formInput.texto.value = '';
     gravaNoStorage("https://pokeapi.co/api/v2/pokemon/");
     recuperaNoStorage();
 })

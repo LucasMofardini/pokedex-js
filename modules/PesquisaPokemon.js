@@ -1,6 +1,7 @@
 import renderizaPokemon from "./RenderizaPokemon.js";
 
 const containerPokemon = document.querySelector(".pokemons");
+const spanMensagem = document.querySelector('.container-mensagem span');
 
 const pesquisaPorPokemon = async (value) => {
   const req = await fetch(`https://pokeapi.co/api/v2/pokemon/${value}`);
@@ -15,7 +16,10 @@ const pesquisaPorPokemon = async (value) => {
 };
 
 const mensagemPesquisa = (mensagem) => {
-  alert(mensagem);
+  spanMensagem.innerText = mensagem;
+  setTimeout(() => {
+    spanMensagem.innerText = '';
+  },5000)
 };
 
 export default pesquisaPorPokemon;
