@@ -91,6 +91,9 @@ h1::before{
     animation: shake 0.2s;
 
 }
+.pokemon .box-nome-tipo .tipo li{
+    font-style: italic;
+}
 @keyframes shake {
     0%{
         transform: translate(0px,0)
